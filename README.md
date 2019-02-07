@@ -18,7 +18,7 @@ To make your own music reactive LED strip you need:
  
  In my project I'm currently using 1 meter WS2812B LED Strip and not using it's maximum brightness, so It can be connected directly to
  my Arduino. In future strip will be powered by an additional 5V power supply. All you need to do to start using my code on your arduino is
- connect DATA_IN PIN from WS2812B LED Strip to Arduino's D4 pin, VCC pin from strip to Arduino's VIN and GND from strip with Arduino's GND.
+ connect DATA_IN PIN from WS2812B LED Strip to Arduino's D4 pin through 300-500 Ohm resistor, VCC pin from strip to Arduino's VIN and GND from strip with Arduino's GND.
  Moreover you have to connect your sound sensor - VCC to +5V, GND to GND and DOUT to Arduino's D6 pin.
  
  

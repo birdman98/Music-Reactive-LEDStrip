@@ -19,13 +19,10 @@ void setup() {
   
   FastLED.addLeds<NEOPIXEL, DATAPIN>(leds, NUM_LEDS);
 
-  for(int i=0; i < NUM_LEDS; ++i) {
-
-    leds[i] = CRGB(0,0,0);
-  }
-
-  FastLED.show();
-
+  initializeLEDs(lastLEDsState);
+  saveLastLEDsState(lastLEDsState);
+  delay(1000);
+  
   pinMode(MICROPHONEPIN, INPUT);
 }
 
@@ -38,12 +35,14 @@ void loop() {
   
     makeEffect(lastLEDsState);
     saveLastLEDsState(lastLEDsState);
+
+   delay(25);
  }
  else {
- 
+
  reset();
+ delay(25);
  
- delay(50);
  }
 
 }
@@ -62,8 +61,7 @@ void makeEffect(CRGB lastLEDsState[]) {
     leds[j] = leds[j-1];
   }
   FastLED.show();
-  delay(50);
-      
+  
   randNumberR = random(20);
   randNumberG = random(20);
   randNumberB = random(20);
@@ -71,8 +69,7 @@ void makeEffect(CRGB lastLEDsState[]) {
   leds[0] = CRGB(randNumberR, randNumberG, randNumberB);
   
   FastLED.show();
-
-   delay(50);   
+  
 }
 
 void reset() {
@@ -91,4 +88,23 @@ void saveLastLEDsState(CRGB lastLEDsState[]){
 
     lastLEDsState[i] = leds[i];
   }
+}
+
+void initializeLEDs(CRGB lastLEDsState[]) {
+
+  randomSeed(analogRead(0));
+
+  for(int i = 0; i < NUM_LEDS; ++i) {
+
+    randNumberR = random(20);
+    randNumberG = random(20);
+    randNumberB = random(20);
+
+    leds[i] = CRGB(randNumberR, randNumberG, randNumberB);
+
+     FastLED.show();
+	 
+	 delay(10);
+  } 
+  
 }

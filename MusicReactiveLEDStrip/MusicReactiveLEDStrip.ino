@@ -1,6 +1,22 @@
 #include "FastLED.h"
+#include "Keypad.h"
 
 #define NUM_LEDS 30
+#define ROWS 4
+#define COLUMNS 4
+
+enum choices {musicReactive = 49, constRGB, blinking}; 
+
+char keys[ROWS][COLUMNS] = {
+  {'1', '2', '3', 'A'},
+  {'4', '5', '6', 'B'},
+  {'7', '8', '9', 'C'},
+  {'*', '0', '#', 'D'}
+};
+
+byte rowPins[ROWS] = {3, 5, 7, 8};
+byte columnPins[COLUMNS] = {9 ,10, 11, 12};
+Keypad keypad = Keypad(makeKeymap(keys), rowPins, columnPins, ROWS, COLUMNS);
 
 CRGB leds[NUM_LEDS];
 CRGB lastLEDsState[NUM_LEDS];
@@ -9,6 +25,8 @@ int randNumberR = 0;
 int randNumberG = 0;
 int randNumberB = 0;
 int microRead = 0;
+
+char key = 0;
 
 #define DATAPIN 4
 #define MICROPHONEPIN 6
@@ -24,14 +42,39 @@ void setup() {
   delay(1000);
   
   pinMode(MICROPHONEPIN, INPUT);
+
+  do {
+    
+  key = keypad.getKey();
+  
+  } while(key == 0);
+
+  switch(key){
+
+    case musicReactive: {
+      
+      loop();
+      break;
+    }
+    case constRGB: {
+
+      standard();
+      break;
+    }
+    case blinking: {
+
+      blinkingLEDs();
+      break;
+    }
+  }
 }
 
 void loop() {
 
  microRead = digitalRead(MICROPHONEPIN);
- Serial.println(microRead);
- 
- if(microRead == LOW){
+    
+    
+    if(microRead == LOW){
   
     makeEffect(lastLEDsState);
     saveLastLEDsState(lastLEDsState);
@@ -42,10 +85,10 @@ void loop() {
 
  reset();
  delay(25);
- 
+     
+  }
  }
-
-}
+ 
 
 void makeEffect(CRGB lastLEDsState[]) {
 
@@ -107,4 +150,27 @@ void initializeLEDs(CRGB lastLEDsState[]) {
 	 delay(10);
   } 
   
+}
+
+void standard() {
+
+  for(; ;) {
+  makeEffect(lastLEDsState);
+  saveLastLEDsState(lastLEDsState);
+  delay(150);
+  }
+  
+}
+
+void blinkingLEDs() {
+ for(; ;) {
+  makeEffect(lastLEDsState);
+  saveLastLEDsState(lastLEDsState);
+
+  delay(100);
+
+  reset();
+
+  delay(100);
+ }
 }

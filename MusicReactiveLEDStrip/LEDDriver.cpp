@@ -349,4 +349,5 @@ void getNewPixelAndMove() {
     leds[0] = CRGB(R, G, B);
 
     FastLED.show();
+	
   }

@@ -18,4 +18,5 @@ void oneColor();
 void oneColorEasy();
 void movingEffect();  
 
+
 #endif

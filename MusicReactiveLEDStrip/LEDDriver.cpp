@@ -1,5 +1,6 @@
 #include "LEDDriver.h"
 #include "Keypad.h"
+#include "FastLED.h"
 
 CRGB leds[NUM_LEDS];
 CRGB lastLEDsState[NUM_LEDS];
@@ -351,3 +352,88 @@ void getNewPixelAndMove() {
     FastLED.show();
 	
   }
+
+char getBrightnessFromUser() {
+  
+  char usersBrightness = 0;
+    
+  usersBrightness = getUsersChoice();
+
+  if( usersBrightness == 'A' || usersBrightness == 'D') {
+    
+    return usersBrightness;
+  }
+
+  delay(250);
+  
+  if(usersBrightness == 'B') {
+
+    usersBrightness = getUsersChoice();
+
+    if(usersBrightness == 'C') {
+      
+      return -1;
+    } else {
+
+      return 0;
+    }
+  }
+
+  return NULL;    
+}
+
+void whiteLamp() {
+
+  int R = 255;
+  int G = 255;
+  int B = 255;
+
+  char brightness = 0;
+
+  for(int i = 0; i < NUM_LEDS; ++i) {
+
+    leds[i] = CRGB(R, G, B);
+  }
+
+  FastLED.show();
+
+  delay(1000);
+
+  do {
+
+    brightness = getBrightnessFromUser();
+
+    Serial.print("zwrocila mi funkcja: ");
+    Serial.println(brightness);
+
+    if(brightness == 'A') {
+
+      if(R < 255) {
+
+        R += 15;
+        G += 15;
+        B += 15;
+      }
+    }
+
+    if(brightness == 'D') {
+
+      if(R > 0) {
+
+        R -= 15;
+        G -= 15;
+        B -= 15;
+      }
+    }
+
+    for(int i = 0; i < NUM_LEDS; ++i) {
+
+    leds[i] = CRGB(R, G, B);
+  }    
+
+    FastLED.show();
+
+    delay(200);
+    
+  } while( brightness != -1);
+}

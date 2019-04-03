@@ -1,6 +1,6 @@
 #include "LEDDriver.h"
 
-enum choices {standard = 49, regularRGB, blinking, volumeStrength, spectrum, reactiveOneColor, oneColorSoft, moving}; 
+enum choices {standard = 49, regularRGB, blinking, volumeStrength, spectrum, reactiveOneColor, oneColorSoft, moving, deskLamp}; 
 
 void setup() {
 
@@ -50,6 +50,12 @@ void setup() {
     case moving: {
 
       movingEffect();
+      break;
+    }
+
+    case deskLamp: {
+
+      whiteLamp();
       break;
     }
   }
